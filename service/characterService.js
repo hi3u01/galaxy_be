@@ -32,7 +32,6 @@ async function fetchCharacters() {
         } else {
            genders.other = (genders.other || 0) + 1;
         }
-        
     }
 
     return {
@@ -40,6 +39,9 @@ async function fetchCharacters() {
         avarage_age: ageCount > 0 ? Math.round(totalAge / ageCount) : null,
         average_weight: weightCount > 0 ? Math.round(totalWeight / weightCount) : null,
         genders,
+        charaters: characters.map(character => ({
+            data: character
+        }))
     }
 }
 
