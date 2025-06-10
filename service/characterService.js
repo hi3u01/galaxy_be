@@ -32,6 +32,22 @@ async function fetchCharacters() {
         } else {
            genders.other = (genders.other || 0) + 1;
         }
+        
+        const nemesisList = await pool.query('SELECT * FROM nemesis WHERE character_id = $1', [character.id]);
+        const nemeses = nemesisList.rows;
+        
+        for(const nemesis of nemeses){
+            totalAge += nemesis.years;
+            ageCount += 1;
+        }
+
+        character.children = {
+            has_nemesis: {
+                records: nemeses.map(nemesis => ({
+                    data: nemesis  
+                }))
+            }
+        } 
     }
 
     return {
