@@ -39,6 +39,17 @@ async function fetchCharacters() {
         for(const nemesis of nemeses){
             totalAge += nemesis.years;
             ageCount += 1;
+
+            const secretList = await pool.query('SELECT * FROM secret WHERE nemesis_id = $1', [nemesis.id]);
+            const secrets = secretList.rows;
+
+            nemesis.children = {
+                has_secret : {
+                    records: secrets.map(secret => ({
+                        data: secret
+                    }))
+                }
+            }
         }
 
         character.children = {
