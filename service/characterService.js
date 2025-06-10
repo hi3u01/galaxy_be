@@ -10,6 +10,7 @@ async function fetchCharacters() {
     let ageCount = 0;
     let totalWeight = 0;
     let weightCount = 0;
+    let genders = {};
 
     const today = dayjs();
 
@@ -25,12 +26,20 @@ async function fetchCharacters() {
             totalWeight += weight;
             weightCount += 1;
         }
+       
+        if(character.gender == "male" || character.gender == "female") {   
+            genders[character.gender] = (genders[character.gender] || 0) + 1;           
+        } else {
+           genders.other = (genders.other || 0) + 1;
+        }
+        
     }
 
     return {
         characters_count,
         avarage_age: ageCount > 0 ? Math.round(totalAge / ageCount) : null,
-        average_weight: weightCount > 0 ? Math.round(totalWeight / weightCount) : null
+        average_weight: weightCount > 0 ? Math.round(totalWeight / weightCount) : null,
+        genders,
     }
 }
 
